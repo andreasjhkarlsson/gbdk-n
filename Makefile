@@ -1,10 +1,9 @@
-INCLUDEDIR=./include
 SRCDIR=./libc
 OBJDIR=./obj
 LIBDIR=./lib
 
 CC=sdcc
-CCF=-mgbz80 -I $(INCLUDEDIR)/
+CCF=-mgbz80 -I ./include -I ./include/asm
 
 CA=sdasgb
 CAF=-plosgff
