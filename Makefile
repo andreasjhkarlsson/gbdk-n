@@ -55,13 +55,14 @@ build:
 	$(CA) $(CAF) $(OBJDIR)/sfr.rel $(SRCDIR)/sfr.s
 	$(CA) $(CAF) $(OBJDIR)/sgb.rel $(SRCDIR)/sgb.s
 	$(CA) $(CAF) $(OBJDIR)/crt0.rel $(SRCDIR)/crt0.s
-	
+
+
 	ls $(OBJDIR)/*.rel > $(OBJDIR)/rels.txt	
-	
-	
 
 	mkdir -p $(LIBDIR)
+	rm -f $(LIBDIR)/gb.lib
 	sdcclib -l $(LIBDIR)/gb.lib $(OBJDIR)/rels.txt
+	cp $(OBJDIR)/crt0.rel $(LIBDIR)/
 
 
 clean:
