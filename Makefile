@@ -7,7 +7,7 @@ CC=sdcc
 CCF=-mgbz80 -I $(INCLUDEDIR)/
 
 CA=sdasgb
-CAF=-o
+CAF=-plosgff
 
 build:
 	mkdir -p $(OBJDIR)
@@ -55,6 +55,7 @@ build:
 	$(CA) $(CAF) $(OBJDIR)/set_xy_t.rel $(SRCDIR)/set_xy_t.s
 	$(CA) $(CAF) $(OBJDIR)/sfr.rel $(SRCDIR)/sfr.s
 	$(CA) $(CAF) $(OBJDIR)/sgb.rel $(SRCDIR)/sgb.s
+	$(CA) $(CAF) $(OBJDIR)/crt0.rel $(SRCDIR)/crt0.s
 	
 	ls $(OBJDIR)/*.rel > $(OBJDIR)/rels.txt	
 	
