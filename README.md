@@ -1,6 +1,6 @@
 # gbdk-n
 
-## gameboy development kit libraries updated to use newer versions of the SDCC compiler & linker
+##### gameboy development kit libraries updated to use newer versions of the SDCC compiler & linker
 
 The latest update of the gameboy development kit (gbdk) was a long time ago (mid 2002). Since then the SDCC compiler has gotten native support for compiling and linking fully functional gameboy roms. 
 
