@@ -149,12 +149,12 @@
 	.globl	.add_JOY
 
 	;; Symbols defined at link time
-	.globl	.STACK
-	.globl	.OAM
-	.globl	.refresh_OAM
+	.STACK = 0xE000
+	.OAM = 0xC000
+	.refresh_OAM = 0xFF80
 
 	;; Initialization routine   
-	.globl	.init
+	.init = 0x000
 
 	;; Main user routine	
 	.globl	_main
