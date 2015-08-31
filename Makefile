@@ -22,6 +22,7 @@ build:
 	$(CA) $(OBJDIR)/f_ibm_sh.rel $(SRCDIR)/f_ibm_sh.s
 	$(CA) $(OBJDIR)/f_italic.rel $(SRCDIR)/f_italic.s
 	$(CA) $(OBJDIR)/f_min.rel $(SRCDIR)/f_min.s
+	$(CA) $(OBJDIR)/font.rel $(SRCDIR)/font.s
 	$(CA) $(OBJDIR)/f_spect.rel $(SRCDIR)/f_spect.s
 	$(CA) $(OBJDIR)/get_bk_t.rel $(SRCDIR)/get_bk_t.s
 	$(CA) $(OBJDIR)/get_data.rel $(SRCDIR)/get_data.s
