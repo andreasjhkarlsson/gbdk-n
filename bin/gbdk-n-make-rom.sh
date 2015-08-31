@@ -2,4 +2,4 @@
 
 set -x
 
-makebin "$@"
+makebin -Z "$@"
