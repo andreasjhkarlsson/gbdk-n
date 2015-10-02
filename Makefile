@@ -5,7 +5,8 @@ LIBDIR=./lib
 CC=bin/gbdk-n-compile.sh
 CA=bin/gbdk-n-assemble.sh
 
-build:
+.PHONY: lib
+lib:
 	chmod u+x bin/*
 	mkdir -p $(OBJDIR)
 	$(CC) $(SRCDIR)/digits.c -o $(OBJDIR)/digits.rel
@@ -64,5 +65,18 @@ build:
 	cp $(OBJDIR)/crt0.rel $(LIBDIR)/
 
 
+.PHONY: examples
+examples: lib
+	$(MAKE) -C examples/galaxy
+	$(MAKE) -C examples/space
+	$(MAKE) -C examples/thumby
+	$(MAKE) -C examples/paint
+
+.PHONY: clean
 clean:
 	rm -rf $(OBJDIR)/*
+	rm -rf $(LIBDIR)/*
+	$(MAKE) -C examples/galaxy clean
+	$(MAKE) -C examples/space clean
+	$(MAKE) -C examples/thumby clean
+	$(MAKE) -C examples/paint clean
