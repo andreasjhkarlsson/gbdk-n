@@ -6,7 +6,13 @@ CC=bin/gbdk-n-compile.sh
 CA=bin/gbdk-n-assemble.sh
 
 .PHONY: lib
-lib:
+lib: $(LIBDIR)/gb.lib $(LIBDIR)/crt0.rel
+
+$(LIBDIR)/gb.lib: $(LIBDIR)/crt0.rel
+	ls $(OBJDIR)/*.rel > $(OBJDIR)/rels.txt
+	sdcclib -l $(LIBDIR)/gb.lib $(OBJDIR)/rels.txt	
+
+$(LIBDIR)/crt0.rel:
 	chmod u+x bin/*
 	mkdir -p $(OBJDIR)
 	$(CC) $(SRCDIR)/digits.c -o $(OBJDIR)/digits.rel
@@ -56,12 +62,7 @@ lib:
 	$(CA) $(OBJDIR)/sgb.rel $(SRCDIR)/sgb.s
 	$(CA) $(OBJDIR)/crt0.rel $(SRCDIR)/crt0.s
 
-
-	ls $(OBJDIR)/*.rel > $(OBJDIR)/rels.txt	
-
 	mkdir -p $(LIBDIR)
-	rm -f $(LIBDIR)/gb.lib
-	sdcclib -l $(LIBDIR)/gb.lib $(OBJDIR)/rels.txt
 	cp $(OBJDIR)/crt0.rel $(LIBDIR)/
 
 
