@@ -4,4 +4,4 @@ GBDK_DIR="$( cd "$( dirname "$0" )" && pwd )/.."
 
 set -x
 
-sdasgb -plosgff "$@"
+sdasgb -plosgff -I"libc" "$@"
