@@ -61,8 +61,8 @@
 	;;   A, HL (need not be saved) and DE (return register)
 	;;
 
-_rand::				; Banked
-_randw::			; Banked
+__rand::			; Banked
+__randw::			; Banked
 	LD	A,(.randlo)
 	LD	L,A
 	LD	E,A		; Save randlo
