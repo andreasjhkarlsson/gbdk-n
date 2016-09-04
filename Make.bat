@@ -38,17 +38,19 @@ if "%1"=="clean" (
 :: Build libc sources
 if not exist %OBJDIR% md %OBJDIR%
 
-echo Building gb.lib
-echo.
+echo Building gb.lib && echo.
 
 for %%A in (%SRCDIR%\*.c) do (
+	if exist %OBJDIR%\%%~nA.rel del %OBJDIR%\%%~nA.rel
 	echo Compiling: %%~nxA && call %CC% %SRCDIR%\%%~nA.c -o %OBJDIR%\%%~nA.rel
+	if not exist %OBJDIR%\%%~nA.rel echo. && echo Build failed! && echo. && pause && goto end
 )
 for %%A in (%SRCDIR%\*.s) do (
+	if exist %OBJDIR%\%%~nA.rel del %OBJDIR%\%%~nA.rel
 	echo Assembling: %%~nxA && call %CA% %OBJDIR%\%%~nA.rel %SRCDIR%\%%~nA.s
+	if not exist %OBJDIR%\%%~nA.rel echo. && echo Build failed! && echo. && pause && goto end
 )
 
-if not exist %OBJDIR%\crt0.rel echo Build failed! && pause && goto end
 if not exist %LIBDIR% md %LIBDIR%
 if exist %LIBDIR%\crt0.rel del %LIBDIR%\crt0.rel
 copy /b/v/y %OBJDIR%\crt0.rel %LIBDIR%\crt0.rel
