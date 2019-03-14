@@ -13,7 +13,7 @@
 
 /** Signed eight bit.
  */
-typedef char          	INT8;
+typedef signed char   	INT8;
 /** Unsigned eight bit.
  */
 typedef unsigned char 	UINT8;
