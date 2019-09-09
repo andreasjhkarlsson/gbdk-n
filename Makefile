@@ -9,8 +9,7 @@ CA=bin/gbdk-n-assemble.sh
 lib: $(LIBDIR)/gb.lib $(LIBDIR)/crt0.rel
 
 $(LIBDIR)/gb.lib: $(LIBDIR)/crt0.rel
-	ls $(OBJDIR)/*.rel > $(OBJDIR)/rels.txt
-	sdcclib -l $(LIBDIR)/gb.lib $(OBJDIR)/rels.txt	
+	sdar -qv $(LIBDIR)/gb.lib $(OBJDIR)/*.rel
 
 $(LIBDIR)/crt0.rel:
 	chmod u+x bin/*

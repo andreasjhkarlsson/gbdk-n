@@ -56,12 +56,10 @@ if exist %LIBDIR%\crt0.rel del %LIBDIR%\crt0.rel
 copy /b/v/y %OBJDIR%\crt0.rel %LIBDIR%\crt0.rel
 
 :: Write list of inputs for the library
-if exist %OBJDIR%\rels.txt del %OBJDIR%\rels.txt
+if exist %LIBDIR%\gb.lib del %LIBDIR%\gb.lib
 for %%A in (%OBJDIR%\*.rel) do (
-	echo %%A >> %OBJDIR%\rels.txt
+	sdar -qv %LIBDIR%\gb.lib %%A
 )
-
-sdcclib -l %LIBDIR%\gb.lib %OBJDIR%\rels.txt	
 
 echo.
 if not exist %LIBDIR%\gb.lib (
