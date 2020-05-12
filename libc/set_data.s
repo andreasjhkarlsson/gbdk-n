@@ -21,7 +21,6 @@ _set_win_data::
 	LD	A,(HL-)		; E = nb_tiles
 	LD	E, A
 	LD	L,(HL)		; L = first_tile
-	PUSH	HL
 
 	XOR	A
 	OR	E		; Is nb_tiles == 0?
@@ -29,16 +28,19 @@ _set_win_data::
 	LD	DE,#0x1000	; DE = nb_tiles = 256
 	JR	2$
 1$:
-	LD	H,#0x00		; HL = nb_tiles
-	LD	L,E
-	ADD	HL,HL		; HL *= 16
-	ADD	HL,HL
-	ADD	HL,HL
-	ADD	HL,HL
-	LD	D,H		; DE = nb_tiles
-	LD	E,L
+;	A gets overwritten later anyways
+;	DE = nb_tiles =* 16 //aka << 4
+;	original code 0x00ed the upper byte
+;	smaller (-1b) and faster (-10c) than original
+	SWAP	E; 2c 2b
+	LD	A, E; 1c 1b
+	AND	A, #0x0F; 2c 2b
+	LD	D, A; 1c 1b
+	LD	A, E; 1c 1b
+	AND	A, #0xF0; 2c 2b
+	LD	E, A; 1c 1b
 2$:
-	POP	HL		; HL = first_tile
+	; still HL = first_tile
 	LD	A,L
 	RLCA			; Sign extend (patterns have signed numbers)
 	SBC	A
@@ -86,7 +88,6 @@ _set_sprite_data::
 	LD	A,(HL-)		; E = nb_tiles
 	LD	E, A
 	LD	L,(HL)		; L = first_tile
-	PUSH	HL
 
 	XOR	A
 	OR	E		; Is nb_tiles == 0?
@@ -94,16 +95,19 @@ _set_sprite_data::
 	LD	DE,#0x1000	; DE = nb_tiles = 256
 	JR	2$
 1$:
-	LD	H,#0x00		; HL = nb_tiles
-	LD	L,E
-	ADD	HL,HL		; HL *= 16
-	ADD	HL,HL
-	ADD	HL,HL
-	ADD	HL,HL
-	LD	D,H		; DE = nb_tiles
-	LD	E,L
+;	A gets overwritten later anyways
+;	DE = nb_tiles =* 16 //aka << 4
+;	original code 0x00ed the upper byte
+;	smaller (-1b) and faster (-10c) than original
+	SWAP	E; 2c 2b
+	LD	A, E; 1c 1b
+	AND	A, #0x0F; 2c 2b
+	LD	D, A; 1c 1b
+	LD	A, E; 1c 1b
+	AND	A, #0xF0; 2c 2b
+	LD	E, A; 1c 1b
 2$:
-	POP	HL		; HL = first_tile
+	; still HL = first_tile
 	LD	H,#0x00
 	ADD	HL,HL		; HL *= 16
 	ADD	HL,HL
