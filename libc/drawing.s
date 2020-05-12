@@ -1,7 +1,7 @@
-;; Optimised Drawing library 
+;; Optimised Drawing library
 ;; By Jon Fuge (jonny@q-continuum.demon.co.uk) based on original file
 ;; Updates
-;;   990223 Michael	Removed mod_col, splitting it up into 
+;;   990223 Michael	Removed mod_col, splitting it up into
 ;;			fg_colour, bg_colour, and draw_mode
 ;; Note: some optimisations are available with unneded PUSH DE/POP DE's
 
@@ -37,39 +37,39 @@
 	;; Data
 	.area	_BSS
 	;; Foreground drawing colour
-.fg_colour::	
+.fg_colour::
 	.ds	1
 	;; Background drawing colour
-.bg_colour::	
+.bg_colour::
 	.ds	1
 	;; Drawing mode (.SOILD etc)
 .draw_mode:
 	.ds	1
 	;; Fill style
-.style:	
+.style:
 	.ds	0x01
 	;; Various varibles
-.x_s:	
+.x_s:
 	.ds	2
-.y_s:	
+.y_s:
 	.ds	2
-.delta_x:	
+.delta_x:
 	.ds	1
-.delta_y:	
+.delta_y:
 	.ds	1
-.l_inc:	
+.l_inc:
 	.ds	1
-.l_d:	
+.l_d:
 	.ds	2
-.dinc1:	
+.dinc1:
 	.ds	2
-.dinc2:	
+.dinc2:
 	.ds	2
-.tx:	
+.tx:
 	.ds	1
-.ty:	
+.ty:
 	.ds	1
-	
+
 	.area   _BASE
 	;; Enter graphic mode
 .gmode::
@@ -142,7 +142,7 @@
 	LD	(.fg_colour),A
 	LD	A,#0x00		; White
 	LD	(.bg_colour),A
-	
+
 	EI			; Enable interrupts
 
 	RET
@@ -181,33 +181,35 @@
 .switch_data::
 	PUSH    DE              ; Save src
 	PUSH    HL              ; Save dst
-	LD      L,B
-	SLA     L
-	SLA     L
-	SLA     L
+	LD      A, B
+	ADD     A, A
+	ADD     A, A
+	ADD     A, A
+	LD      L, A
 	LD      H,#0x00
 	ADD     HL,HL
 	LD      D,H
 	LD      E,L
 
 	LD      HL,#.y_table
-	SLA     C
-	SLA     C
-	SLA     C
+	LD      A, C
+	ADD     A, A
+	ADD     A, A
+	ADD     A, A
+	LD      C, A
 	LD      B,#0x00
 	ADD     HL,BC
 	ADD     HL,BC
-	LD      B,(HL)
-	INC     HL
+	LD      A,(HL+)
 	LD      H,(HL)
-	LD      L,B
+	LD      L,A
 	ADD     HL,DE
 
 	LD      B,H             ; BC = src
 	LD      C,L
 	POP     HL              ; HL = dst
 	PUSH    BC              ; Save dst
-	LD      A,H
+	LD      A,H             ; A gets trashed here anyways
 	OR      L
 	JR      Z,1$
 	LD      DE,#0x10
@@ -252,9 +254,9 @@
 	LD	(.y_s),A
 
 	XOR	A
-	LD	(.x_s+1),A 
+	LD	(.x_s+1),A
 	LD	A,D
-	LD	(.y_s+1),A 
+	LD	(.y_s+1),A
 	CPL
 	LD	L,A
 	LD	H,#0xFF
@@ -304,7 +306,7 @@ cloop$:
 	LD	A,L
 	LD	(.l_d+1),A
 	JR	cloop$
-ycirc$:	
+ycirc$:
 	LD	A,(.style)
 	OR	A
 	CALL	NZ,.verlin
@@ -515,7 +517,7 @@ ycirc$:
 	CALL	.plot
 	POP	DE
 	POP	BC
-	
+
 	LD	A,D
 	OR	A
 	RET	Z
@@ -674,7 +676,7 @@ dbox$:
 	LD	(.fg_colour),A
 	LD	A,C
 	LD	(.bg_colour),A
-	.endif 
+	.endif
 filllp$:
 	LD	A,(.x_s)
 	LD	B,A
@@ -692,7 +694,7 @@ filllp$:
 	INC	A
 	LD	(.y_s),A
 	JR	filllp$
-swap$:	
+swap$:
 	.if	0
 	LD	A,(.mod_col)	;Swap fore + back colours.
 	LD	D,A
@@ -840,7 +842,7 @@ dx1$:
 	LD	A,(.mod_col)
 	LD	D,A
 	.endif
-	
+
 	LD	A,(.delta_x)
 	LD	E,A
 
@@ -945,7 +947,7 @@ nadj$:
 	;; Draw accelerated horizontal line
 	.if	0
 	;; xxx needed?
-	LD	A,(.mod_col)	
+	LD	A,(.mod_col)
 	LD	D,A
 	.endif
 
@@ -1066,7 +1068,7 @@ y3$:
 	LD	A,(.mod_col)
 	LD	D,A
 	.endif
-	
+
 	LD	A,(.delta_y)
 	LD	E,A
 	INC	E
@@ -1284,7 +1286,7 @@ nchgy$:
 	CP	#.M_XOR
 	JR	Z,20$
 	CP	#.M_AND
-	JR	Z,30$		
+	JR	Z,30$
 	.endif
 
 	; Fall through to SOLID by default
@@ -1511,7 +1513,7 @@ end$:	LD	E,B
 
 	LD	DE,#_font_ibm_fixed_tiles
 	.endif
-	
+
 	ADD	HL,DE
 
 	LD	D,H
@@ -1571,7 +1573,7 @@ b0$:	OR	B
 	.endif
 	JR	NZ,b1$
 	XOR	B
-b1$:	
+b1$:
 	LD	E,A
 	.if	1
 	POP	HL
@@ -1743,7 +1745,7 @@ _plot::				; Banked
 	LD	(.fg_colour),A
 	LD	A,(HL+)		; mode
 	LD	(.draw_mode),A
-	
+
 	CALL	.plot
 
 	POP	BC

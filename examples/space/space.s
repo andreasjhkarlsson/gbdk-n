@@ -2,20 +2,20 @@
 	;;  of the GB (background, window and animated sprite)
 	;; I have used fixed-point values for both the position and
 	;;  speed of objects to get smooth movements
-	;; 
+	;;
 	;; OBJ data		: 0x8000 -> 0x8FFF (unsigned)
 	;; Window data		: 0x8800 -> 0x97FF (signed)
 	;; Background data	: 0x8800 -> 0x97FF (signed)
-	;; 
+	;;
 	;; Tiled 0xFC -> 0xFF are standard tiles (all black -> all white)
-	;; 
+	;;
 	;; Keys:
 	;; Arrow keys		: Change the speed (and direction) of the sprite
 	;; Arrow keys + A	: Change the speed (and direction) of the window
 	;; Arrow keys + B	: Change the speed (and direction) of the background
 	;; START		: Open/close the door
 	;; SELECT		: Basic fading effect
-	;; 
+	;;
 	;; Note that the window is kept in the lower right part of the screen
 	;; since it can't be made transparent
 
@@ -196,10 +196,10 @@ _main::
 	; Initialize sprite
 	XOR	A
 	LD	(.sframe),A
-	LD	C,#0x00		; Sprite 0x00
+	LD	A,#0x00		; Sprite 0x00
 	LD	D,#0x00		; Default sprite properties
 	CALL	.set_sprite_prop
-	LD	C,#0x01		; Sprite 0x01
+	LD	A,#0x01		; Sprite 0x01
 	LD	D,#0x00		; Default sprite properties
 	CALL	.set_sprite_prop
 
@@ -786,16 +786,16 @@ _main::
 	LD	B,#0x00
 	LD	C,A
 	ADD	HL,BC
-	LD	C,#0x00		; Sprite 0x00
 	LD	A,(HL+)
 	LD	D,A
+	LD	A,#0x00		; Sprite 0x00
 	PUSH	HL
 	CALL	.set_sprite_tile
 	POP	HL
 
-	LD	C,#0x01		; Sprite 0x01
 	LD	A,(HL+)
 	LD	D,A
+	LD	C,#0x01		; Sprite 0x01
 	CALL	.set_sprite_tile
 
 	RET

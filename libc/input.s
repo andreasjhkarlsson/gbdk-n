@@ -3,7 +3,7 @@
 	;; Note that while gets uses a pointer, the pointer had better
 	;; be in non-banked RAM else bad things will happen.
 	;; BANKED:	checked, imperfect
-	
+
 	.globl	.copy_vram
 	.globl	.set_xy_wtt
 	.globl	.mv_sprite
@@ -103,11 +103,11 @@
 	LDH	(.WY),A
 
 	;; Initialize sprite
-	LD	C,#0x00		; Sprite 0x00
-	LD	D,#0x00		; Default sprite properties
+	XOR	A, A		; Sprite 0x00
+	LD	D, A		; Default sprite properties
 	CALL	.set_sprite_prop
-	LD	C,#0x00		; Sprite 0x00
-	LD	D,#0x00		; Tile 0x00
+	XOR	A, A		; Sprite 0x00
+	LD	D, A		; Tile 0x00
 	CALL	.set_sprite_tile
 	LD	A,#0b00101100
 	LDH	(.OBP0),A
@@ -329,9 +329,9 @@
 	SUB	#.KBDWINPOSY-1
 	JR	C,99$
 	JR	Z,99$
-	SLA	A		; A = A * 8
-	SLA	A
-	SLA	A
+	ADD	A, A		; A = A * 8
+	ADD	A, A
+	ADD	A, A
 	SUB	D
 	JR	C,99$
 	JR	Z,99$
@@ -419,8 +419,8 @@
 	LD	(HL),#>.MINACCEL
 	JR	4$		; Update position
 2$:
-	LD	C,(HL)
-	INC	HL
+	LD	A,(HL+)
+	LD	C, A
 	LD	B,(HL)
 	DEC	BC
 	LD	A,B
@@ -504,15 +504,15 @@
 	PUSH	HL
 	LD	C,#0x00		; Sprite 0x00
 	LD	A,(.msx)
-	SLA	A		; A = A * 8
-	SLA	A
-	SLA	A
+	ADD	A, A		; A = A * 8
+	ADD	A, A
+	ADD	A, A
 	ADD	#.MSOFFSETX
 	LD	D,A
 	LD	A,(.msy)
-	SLA	A		; A = A * 8
-	SLA	A
-	SLA	A
+	ADD	A, A		; A = A * 8
+	ADD	A, A
+	ADD	A, A
 	ADD	#.MSOFFSETY
 	LD	E,A
 	CALL	.mv_sprite
@@ -581,7 +581,7 @@ _gets::				; Banked
 	.db	0x28,0x29,0x2A,0x2B,0x2C,0x2D,0x2E,0x2F
 	.ascii	"0123456789:"
 	;; astorgb recognises the embedded ; as a comment :)
-	.db	0x3B		
+	.db	0x3B
 	.ascii	"<=>?"
 	.ascii	"@ABCDEFGHIJKLMNO"
 	.ascii	"PQRSTUVWXYZ[\\]^_"
