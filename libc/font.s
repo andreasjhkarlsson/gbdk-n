@@ -23,7 +23,7 @@
 
 	; Other bits
 	FONT_BCOMPRESSED	=	2
-	
+
 	.CR     		= 	0x0A          ; Unix
 	.SPACE			=	0x00
 
@@ -52,7 +52,7 @@ font_first_free_tile::
 	; Table containing descriptors for all of the fonts
 font_table::
 	.ds	sfont_handle_sizeof*.MAX_FONTS
-	
+
 	.area   _BASE
 	; Copy uncompressed 16 byte tiles from (BC) to (HL), length = DE*2
 	; Note: HL must be aligned on a UWORD boundry
@@ -78,7 +78,7 @@ font_copy_uncompressed::
 	ld	a,(bc)
 	ld	(hl+),a
 	inc	bc
-	
+
         ldh     a,(.STAT)
         bit     1,a
         jr      nz,#.-4
@@ -176,7 +176,7 @@ font_copy_compressed_grey2:
 	or	e
 	jr	nz,font_copy_compressed_loop
 	ret
-	
+
 ; Load the font HL
 font_load::
 	call	.display_off
@@ -208,15 +208,15 @@ font_load_found:
 
 	ld	a,(font_first_free_tile)
 	dec	hl
-	ld	(hl),a		
+	ld	(hl),a
 
 	push	hl
 	call	font_set	; Set this new font to be the default
-	
+
 	; Only copy the tiles in if were in text mode
 	ld	a,(.mode)
 	and	#.T_MODE
-	
+
 	call	nz,font_copy_current
 
 				; Increase the 'first free tile' counter
@@ -243,7 +243,7 @@ font_load_exit:
 	RET
 
 	; Copy the tiles from the current font into VRAM
-font_copy_current::	
+font_copy_current::
 				; Find the current font data
 	ld	hl,#font_current+sfont_handle_font
 	ld	a,(hl+)
@@ -262,7 +262,7 @@ font_copy_current::
 	dec	hl
 
 	ld	a,(hl)		; Get the flags
-	push	af		
+	push	af
 	and	#3			; Only lower 2 bits set encoding table size
 
 	ld	bc,#128
@@ -277,13 +277,13 @@ font_copy_current::
 font_copy_current_copy:
 	inc	hl
 	inc	hl		; Points to the start of the encoding table
-	add	hl,bc		
+	add	hl,bc
 	ld	c,l
-	ld	b,h		; BC points to the start of the tile data		
+	ld	b,h		; BC points to the start of the tile data
 
 	; Find the offset in VRAM for this font
 	ld	a,(font_current+sfont_handle_first_tile)	; First tile used for this font
-	ld	l,a		
+	ld	l,a
 	ld	h,#0
 	add	hl,hl
 	add	hl,hl
@@ -309,7 +309,7 @@ font_set::
 	ld	a,(hl+)
 	ld	(font_current+2),a
 	ret
-	
+
 	;; Print a character with interpretation
 .put_char::
 	; See if it's a special char
@@ -355,7 +355,7 @@ font_set::
 	; Font system is not yet setup - init it and copy in the ibm font
 	; Kind of a compatibility mode
 	call	_font_init
-	
+
 	; Need all of the tiles
 	xor	a
 	ld	(font_first_free_tile),a
@@ -487,9 +487,9 @@ _font_init::
 	call	.cls
 	pop	bc
 	ret
-	
+
 _cls::
-.cls::	
+.cls::
 	PUSH	DE
 	PUSH	HL
 	LD	HL,#0x9800
@@ -514,6 +514,7 @@ _cls::
 	.area	_CODE
 	; Support routines
 _gotoxy::			; Banked
+	ld b, b
 	lda	hl,.BANKOV(sp)
 	ld	a,(hl+)
 	ld	(.curx),a
@@ -608,7 +609,7 @@ _posy::				; Banked
 	LD	(.cury),A
 	LD	(.curx),A
 	JR	99$
-3$:	
+3$:
 	CALL	.scroll
 99$:
 	POP	HL

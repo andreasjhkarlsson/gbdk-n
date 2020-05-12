@@ -3,7 +3,7 @@
 	;; Note that while gets uses a pointer, the pointer had better
 	;; be in non-banked RAM else bad things will happen.
 	;; BANKED:	checked, imperfect
-	
+
 	.globl	.copy_vram
 	.globl	.set_xy_wtt
 	.globl	.mv_sprite
@@ -419,8 +419,8 @@
 	LD	(HL),#>.MINACCEL
 	JR	4$		; Update position
 2$:
-	LD	C,(HL)
-	INC	HL
+	LD	A,(HL+)
+	LD	C, A
 	LD	B,(HL)
 	DEC	BC
 	LD	A,B
@@ -581,7 +581,7 @@ _gets::				; Banked
 	.db	0x28,0x29,0x2A,0x2B,0x2C,0x2D,0x2E,0x2F
 	.ascii	"0123456789:"
 	;; astorgb recognises the embedded ; as a comment :)
-	.db	0x3B		
+	.db	0x3B
 	.ascii	"<=>?"
 	.ascii	"@ABCDEFGHIJKLMNO"
 	.ascii	"PQRSTUVWXYZ[\\]^_"

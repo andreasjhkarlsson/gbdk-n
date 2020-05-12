@@ -11,22 +11,21 @@ _set_bkg_palette::		; Non-banked
 	PUSH	DE
 
 	LDA	HL,9(SP)	; Skip return address and registers
-	LD	B,(HL)		; BC = rgb_data
-	DEC	HL
-	LD	C,(HL)
-	DEC	HL
-	LD	D,(HL)		; D = nb_palettes
-	DEC	HL
+	LD	A,(HL-)		; BC = rgb_data
+	LD	B, A
+	LD	A,(HL-)
+	LD	C, A
+	LD	A,(HL-)		; A = nb_palettes
+	LD	D, A		; D = nb_palettes
 	LD	E,(HL)		; E = first_palette
 
-	LD	A,D		; A = nb_palettes
 	ADD	E
 	ADD	A		; A *= 8
 	ADD	A
 	ADD	A
-	LD	D,A
+	LD	D,A		; why again did we set that before?
 
-        LD      A,E		; E = first_palette
+	LD	A,E		; E = first_palette
 	ADD	A		; A *= 8
 	ADD	A
 	ADD	A
@@ -55,22 +54,21 @@ _set_sprite_palette::		; Non-banked
 	PUSH	DE
 
 	LDA	HL,9(SP)	; Skip return address and registers
-	LD	B,(HL)		; BC = rgb_data
-	DEC	HL
-	LD	C,(HL)
-	DEC	HL
-	LD	D,(HL)		; D = nb_palettes
-	DEC	HL
+	LD	A,(HL-)		; BC = rgb_data
+	LD	B, A
+	LD	A,(HL-)
+	LD	C, A
+	LD	A,(HL-)		; A = nb_palettes
+	LD	D, A		; D = nb_palettes
 	LD	E,(HL)		; E = first_palette
 
-	LD	A,D		; A = nb_palettes
 	ADD	E
 	ADD	A		; A *= 8
 	ADD	A
 	ADD	A
 	LD	D,A
 
-        LD      A,E		; E = first_palette
+	LD	A,E		; E = first_palette
 	ADD	A		; A *= 8
 	ADD	A
 	ADD	A
@@ -100,15 +98,15 @@ _set_bkg_palette_entry::	; Banked
 	PUSH	DE
 
 	LDA	HL,.BANKOV+4+3(SP); Skip return address and registers
-	LD	B,(HL)		; BC = rgb_data
-	DEC	HL
-	LD	C,(HL)
-	DEC	HL
-	LD	D,(HL)		; D = pal_entry
-	DEC	HL
+	LD	A,(HL-)		; BC = rgb_data
+	LD	B, A
+	LD	A,(HL-)
+	LD	C, A
+	LD	A,(HL-)		; D = pal_entry
+	LD	D, A
 	LD	E,(HL)		; E = first_palette
 
-        LD      A,E		; E = first_palette
+	LD	A,E		; E = first_palette
 	ADD	A		; A *= 8
 	ADD	A
 	ADD	A
@@ -141,15 +139,15 @@ _set_sprite_palette_entry::
 	PUSH	DE
 
 	LDA	HL,.BANKOV+4+3(SP); Skip return address and registers
-	LD	B,(HL)		; BC = rgb_data
-	DEC	HL
-	LD	C,(HL)
-	DEC	HL
-	LD	D,(HL)		; D = pal_entry
-	DEC	HL
+	LD	A,(HL-)		; BC = rgb_data
+	LD	B, A
+	LD	A,(HL-)
+	LD	C, A
+	LD	A,(HL-)		; D = pal_entry
+	LD	D, A
 	LD	E,(HL)		; E = first_palette
 
-        LD      A,E		; E = first_palette
+	LD	A,E		; E = first_palette
 	ADD	A		; A *= 8
 	ADD	A
 	ADD	A
@@ -227,9 +225,9 @@ _cgb_compatibility::		; Banked
 	LDH	(.BCPD),A
 	LD	A,#0x29
 	LDH	(.BCPD),A
-	LD	A,#0x00		; Black
+	XOR	A, A		; Black
 	LDH	(.BCPD),A
-	LD	A,#0x00
+	XOR	A, A
 	LDH	(.BCPD),A
 
 	LD	A,#0x80
@@ -246,9 +244,9 @@ _cgb_compatibility::		; Banked
 	LDH	(.OCPD),A
 	LD	A,#0x29
 	LDH	(.OCPD),A
-	LD	A,#0x00		; Black
+	XOR	A, A		; Black
 	LDH	(.OCPD),A
-	LD	A,#0x00
+	XOR	A, A
 	LDH	(.OCPD),A
 
 	RET
