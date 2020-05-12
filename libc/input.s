@@ -103,11 +103,11 @@
 	LDH	(.WY),A
 
 	;; Initialize sprite
-	LD	C,#0x00		; Sprite 0x00
-	LD	D,#0x00		; Default sprite properties
+	XOR	A, A		; Sprite 0x00
+	LD	D, A		; Default sprite properties
 	CALL	.set_sprite_prop
-	LD	C,#0x00		; Sprite 0x00
-	LD	D,#0x00		; Tile 0x00
+	XOR	A, A		; Sprite 0x00
+	LD	D, A		; Tile 0x00
 	CALL	.set_sprite_tile
 	LD	A,#0b00101100
 	LDH	(.OBP0),A
