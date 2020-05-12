@@ -325,10 +325,10 @@ gsinit::
 
 	;; AND to get rid of the extra flags
 	AND	#0x03
-	LD	L,A
 	LD	BC,#.MODE_TABLE
-	SLA	L		; Multiply mode by 4
-	SLA	L
+	ADD	A, A		; Multiply mode by 4
+	ADD	A, A
+	LD	L,A
 	ADD	HL,BC
 	JP	(HL)		; Jump to initialization routine
 

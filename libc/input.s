@@ -329,9 +329,9 @@
 	SUB	#.KBDWINPOSY-1
 	JR	C,99$
 	JR	Z,99$
-	SLA	A		; A = A * 8
-	SLA	A
-	SLA	A
+	ADD	A, A		; A = A * 8
+	ADD	A, A
+	ADD	A, A
 	SUB	D
 	JR	C,99$
 	JR	Z,99$
@@ -504,15 +504,15 @@
 	PUSH	HL
 	LD	C,#0x00		; Sprite 0x00
 	LD	A,(.msx)
-	SLA	A		; A = A * 8
-	SLA	A
-	SLA	A
+	ADD	A, A		; A = A * 8
+	ADD	A, A
+	ADD	A, A
 	ADD	#.MSOFFSETX
 	LD	D,A
 	LD	A,(.msy)
-	SLA	A		; A = A * 8
-	SLA	A
-	SLA	A
+	ADD	A, A		; A = A * 8
+	ADD	A, A
+	ADD	A, A
 	ADD	#.MSOFFSETY
 	LD	E,A
 	CALL	.mv_sprite
